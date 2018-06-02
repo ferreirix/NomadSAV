@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "sdkVersion": "27.0.0",
+    "name": "NomadSAV",
+    "description": "Nomad SAV ticketing system",
+    "ios": {
+      "supportsTablet": true
+    },
+
+    "android": {
+      "package": "com.nomadvantage.nomadsav"
+    }
+  }
+}
