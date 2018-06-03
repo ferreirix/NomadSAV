@@ -1,4 +1,4 @@
-async function getPeople() {
+export async function getTickets() {
   const response = await fetch('https://nomadsav.azurewebsites.net/api/loadtickets');
   // only proceed once promise is resolved
   const data = await response.json();
@@ -6,4 +6,4 @@ async function getPeople() {
   return data;
 }
 
-export default getPeople;
+export default getTickets;

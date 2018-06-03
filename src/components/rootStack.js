@@ -1,15 +1,15 @@
 import { createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
-import { Home } from './home';
-import { DetailsTicket } from './detailsTicket';
+import Home from './home';
+import DetailsTicket from './detailsTicket';
+import MachineReader from './machineReader';
+import HomeTest from './homeTest';
 
-const rootStack = createStackNavigator(
+const RootStack = createStackNavigator(
   {
-    Home: {
-      screen: Home,
-    },
-    Details: {
-      screen: DetailsTicket,
-    },
+    Home,
+    DetailsTicket,
+    HomeTest,
+    MachineReader,
   },
   {
     initialRouteName: 'Home',
@@ -25,4 +25,4 @@ const rootStack = createStackNavigator(
   },
 );
 
-export default rootStack;
+export default RootStack;
