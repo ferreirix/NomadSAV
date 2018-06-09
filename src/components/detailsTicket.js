@@ -58,7 +58,7 @@ class Ticketdetail extends Component {
             <Label style={styles.accessories}>Accessoires</Label>
             <Textarea rowSpan={5} bordered />
             <Item fixedLabel last>
-              <Label>Date d'envoie</Label>
+              <Label>Date d`envoie</Label>
               <Input />
             </Item>
           </Form>

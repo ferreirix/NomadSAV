@@ -76,7 +76,7 @@ export default class MachineScanner extends Component {
 
     maybeRenderUrl = () => {
         if (!this.state.lastScannedUrl) {
-            return;
+            return false;
         }
 
         return (
