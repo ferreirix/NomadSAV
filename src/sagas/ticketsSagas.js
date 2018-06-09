@@ -1,6 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionNames from '../actions/constants';
-import getTickets from '../azFunctions/ticketsAPI';
+import { getTickets } from '../azFunctions/ticketsAPI';
 
 function* fetchData() {
   try {

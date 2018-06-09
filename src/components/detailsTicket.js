@@ -44,7 +44,7 @@ class Ticketdetail extends Component {
             <TouchableOpacity
               style={styles.accessories}
               onPress={() =>
-                this.props.navigation.navigate('HomeTest', { onBarCodeRead: this.onBarCodeRead })}
+                this.props.navigation.navigate('MachineScanner', { onBarCodeRead: this.onBarCodeRead })}
             >
               <Icon active name='md-barcode' fontSize={50} />
             </TouchableOpacity>

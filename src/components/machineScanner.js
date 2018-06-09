@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-    Alert,
-    Linking,
     Dimensions,
     LayoutAnimation,
     Text,
@@ -46,7 +44,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class HomeTest extends Component {
+export default class MachineScanner extends Component {
     static navigationOptions = {
         headerStyle: {
             backgroundColor: '#567fba',
@@ -69,7 +67,7 @@ export default class HomeTest extends Component {
         });
     };
 
-    _handleBarCodeRead = result => {
+    handleBarCodeRead = result => {
         if (result.data !== this.state.lastScannedUrl) {
             LayoutAnimation.spring();
             this.setState({ lastScannedUrl: result.data });
@@ -83,36 +81,24 @@ export default class HomeTest extends Component {
 
         return (
           <View style={styles.bottomBar}>
-              <TouchableOpacity style={styles.url} onPress={this.handlePressUrl}>
-                  <Text numberOfLines={1} style={styles.urlText}>
-                      {this.state.lastScannedUrl}
-                    </Text>
-                </TouchableOpacity>
-              <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={this.handlePressCancel}
-                >
-                  <Text style={styles.cancelButtonText}>
+            <TouchableOpacity style={styles.url} onPress={this.handlePressUrl}>
+              <Text numberOfLines={1} style={styles.urlText}>
+                {this.state.lastScannedUrl}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={this.handlePressCancel}
+            >
+              <Text style={styles.cancelButtonText}>
                         Cancel
-                    </Text>
-                </TouchableOpacity>
-            </View>
+              </Text>
+            </TouchableOpacity>
+          </View>
         );
     };
 
     handlePressUrl = () => {
-        // Alert.alert(
-        //     'Open this URL?',
-        //     this.state.lastScannedUrl,
-        //     [
-        //         {
-        //             text: 'Yes',
-        //             onPress: () => Linking.openURL(this.state.lastScannedUrl),
-        //         },
-        //         { text: 'No', onPress: () => { } },
-        //     ],
-        //     { cancellable: false }
-        // );
         const { navigation } = this.props;
         navigation.goBack();
         navigation.state.params.onBarCodeRead({ code: this.state.lastScannedUrl });
@@ -125,24 +111,18 @@ export default class HomeTest extends Component {
     render() {
         return (
           <View style={styles.container}>
-              {this.state.hasCameraPermission === null
+            {this.state.hasCameraPermission === null
                     ? <Text>Requesting for camera permission</Text>
-                    // : this.state.hasCameraPermission === false
-                    //     ? <Text style={{ color: '#fff' }}>
-                    //         Camera permission is not granted
-                    //     </Text>
                     : <BarCodeScanner
-                      onBarCodeRead={this._handleBarCodeRead}
+                      onBarCodeRead={this.handleBarCodeRead}
                       style={{
                             height: Dimensions.get('window').height,
                             width: Dimensions.get('window').width,
                         }}
                     />}
-
-              {this.maybeRenderUrl()}
-
-              <StatusBar hidden />
-            </View>
+            {this.maybeRenderUrl()}
+            <StatusBar hidden />
+          </View>
         );
     }
 }
