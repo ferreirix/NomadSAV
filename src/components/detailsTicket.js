@@ -29,19 +29,41 @@ class Ticketdetail extends Component {
     super();
     this.state = {
       code: '',
+      repairer: '',
+      dateSent: '',
+      accessories: '',
     }
   }
 
   onBarCodeRead = data => {
-    this.setState({ code: data.code });
+    this.setState((prevState, props) => ({
+      code: data.code
+    }));
+  };
+
+  onAccessoriesChange = data => {
+    this.setState((prevState, props) => ({
+      accessories: data
+    }));
+  };
+
+  onRepairerChange = data => {
+    this.setState((prevState, props) => ({
+      repairer: data
+    }));
+  };
+  onDateChange = data => {
+    this.setState((prevState, props) => ({
+      dateSent: data
+    }));
   };
 
   onSave = () => {
     this.props.createTicket(
       {
         machineId: this.state.code,
-        name: this.state.code,
-        subtitle: this.state.code
+        name: this.state.repairer,
+        subtitle: this.state.dateSent
       }
     );
   }
@@ -51,7 +73,6 @@ class Ticketdetail extends Component {
       <Container>
         <Content>
           <Form>
-
             <Item>
               <TouchableOpacity
                 onPress={() =>
@@ -61,15 +82,30 @@ class Ticketdetail extends Component {
               >
                 <Icon active name='md-barcode' />
               </TouchableOpacity>
-              <Input placeholder='Machine #' value={this.state.code} />
+              <Input
+                placeholder='Machine #'
+                value={this.state.code}
+                onChangeText={this.onBarCodeRead}
+              />
             </Item>
             <Item stackedLabel>
               <Label>Destinataire</Label>
-              <Input />
+              <Input
+                value={this.state.repairer}
+                onChangeText={this.onRepairerChange}
+              />
             </Item>
-            <Textarea rowSpan={5} bordered placeholder='Accessoires' style={styles.accessories} />
+            <Textarea
+              rowSpan={5}
+              bordered
+              placeholder='Accessoires'
+              style={styles.accessories}
+              value={this.state.accessories}
+              onChangeText={this.onAccessoriesChange}
+            />
             <DatePicker
-              locale="en"
+              locale="fr"
+              onDateChange={this.onDateChange}
               timeZoneOffsetInMinutes={undefined}
               modalTransparent={false}
               animationType="fade"
@@ -85,7 +121,8 @@ class Ticketdetail extends Component {
               block
               success
               style={styles.save}
-              onPress={this.onSave}>
+              onPress={this.onSave}
+            >
               <Text style={styles.saveText}>Sauvegarder</Text>
             </Button>
           </Form>

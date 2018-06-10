@@ -62,15 +62,18 @@ export default class MachineScanner extends Component {
 
     requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({
+
+        this.setState((prevState, props) => ({
             hasCameraPermission: status === 'granted',
-        });
+        }));
     };
 
     handleBarCodeRead = result => {
         if (result.data !== this.state.lastScannedUrl) {
             LayoutAnimation.spring();
-            this.setState({ lastScannedUrl: result.data });
+            this.setState((prevState, props) => ({
+                lastScannedUrl: result.data
+            }));
         }
     };
 
@@ -80,21 +83,21 @@ export default class MachineScanner extends Component {
         }
 
         return (
-          <View style={styles.bottomBar}>
-            <TouchableOpacity style={styles.url} onPress={this.handlePressUrl}>
-              <Text numberOfLines={1} style={styles.urlText}>
-                {this.state.lastScannedUrl}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={this.handlePressCancel}
-            >
-              <Text style={styles.cancelButtonText}>
+            <View style={styles.bottomBar}>
+                <TouchableOpacity style={styles.url} onPress={this.handlePressUrl}>
+                    <Text numberOfLines={1} style={styles.urlText}>
+                        {this.state.lastScannedUrl}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={this.handlePressCancel}
+                >
+                    <Text style={styles.cancelButtonText}>
                         Cancel
               </Text>
-            </TouchableOpacity>
-          </View>
+                </TouchableOpacity>
+            </View>
         );
     };
 
@@ -105,24 +108,26 @@ export default class MachineScanner extends Component {
     };
 
     handlePressCancel = () => {
-        this.setState({ lastScannedUrl: null });
+        this.setState((prevState, props) => ({
+            lastScannedUrl: null
+        }));
     };
 
     render() {
         return (
-          <View style={styles.container}>
-            {this.state.hasCameraPermission === null
+            <View style={styles.container}>
+                {this.state.hasCameraPermission === null
                     ? <Text>Requesting for camera permission</Text>
                     : <BarCodeScanner
-                      onBarCodeRead={this.handleBarCodeRead}
-                      style={{
+                        onBarCodeRead={this.handleBarCodeRead}
+                        style={{
                             height: Dimensions.get('window').height,
                             width: Dimensions.get('window').width,
                         }}
                     />}
-            {this.maybeRenderUrl()}
-            <StatusBar hidden />
-          </View>
+                {this.maybeRenderUrl()}
+                <StatusBar hidden />
+            </View>
         );
     }
 }
