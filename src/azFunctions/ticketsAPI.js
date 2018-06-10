@@ -6,4 +6,18 @@ export async function getTickets() {
   return data;
 }
 
-export default getTickets;
+export async function createTicket(ticket) {
+  const response = await fetch('https://nomadsav.azurewebsites.net/api/createTicket', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(ticket.data)
+  });
+  
+  // only proceed once promise is resolved
+  const data = await response.json();
+  // only proceed once second promise is resolved
+  return data;
+}

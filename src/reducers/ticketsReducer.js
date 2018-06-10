@@ -27,6 +27,23 @@ export default function ticketsReducer(state = initialState, action) {
         isLoading: false,
         error: true,
       };
+    case actionNames.CREATE_TICKET:
+      return {
+        ...state,
+        isLoading: true,
+        ticket: action.data,
+      };
+    case actionNames.CREATE_TICKET_DONE:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionNames.CREATE_TICKET_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+      };
     default:
       return state;
   }

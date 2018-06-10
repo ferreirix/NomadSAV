@@ -1,6 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actionNames from '../actions/constants';
-import { getTickets } from '../azFunctions/ticketsAPI';
+import { getTickets, createTicket } from '../azFunctions/ticketsAPI';
 
 function* fetchData() {
   try {
@@ -11,8 +11,18 @@ function* fetchData() {
   }
 }
 
-function* ticketsSaga() {
-  yield takeEvery(actionNames.FETCHING_TICKETS, fetchData);
+function* createTicketSaga(ticket) {
+  try {
+    const data = yield createTicket(ticket);
+    yield put({ type: actionNames.CREATE_TICKET_DONE, data });
+  } catch (e) {
+    yield put({ type: actionNames.CREATE_TICKET_ERROR });
+  }
 }
 
-export default ticketsSaga;
+const ticketSagas = [
+  takeEvery(actionNames.FETCHING_TICKETS, fetchData),
+  takeEvery(actionNames.CREATE_TICKET, createTicketSaga),
+];
+
+export default ticketSagas;

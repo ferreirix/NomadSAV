@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Container, Textarea, Content, Form, Item, Input, Label, Icon } from 'native-base';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Container, Textarea, Content, Form, Item, Input, Label, Icon, Button, DatePicker } from 'native-base';
+import { connect } from 'react-redux';
+import { createTicket } from '../actions/ticketsActions';
 
 const styles = StyleSheet.create({
   accessories: {
-    marginLeft: 15,
+    marginLeft: 7,
     marginTop: 15,
   },
-  machineId: {
-    width: '70%'
+  save: {
+    margin: 15,
   },
-
+  saveText: {
+    fontWeight: 'bold',
+    color: 'white'
+  }
 });
 
 class Ticketdetail extends Component {
@@ -28,44 +33,82 @@ class Ticketdetail extends Component {
   }
 
   onBarCodeRead = data => {
-    // console.log(data.code);
     this.setState({ code: data.code });
   };
+
+  onSave = () => {
+    this.props.createTicket(
+      {
+        machineId: this.state.code,
+        name: this.state.code,
+        subtitle: this.state.code
+      }
+    );
+  }
 
   render() {
     return (
       <Container>
         <Content>
           <Form>
-            <Item fixedLabel>
-              <Label>Machine ID</Label>
-              <Input value={this.state.code} />
+
+            <Item>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('MachineScanner',
+                    { onBarCodeRead: this.onBarCodeRead })
+                }
+              >
+                <Icon active name='md-barcode' />
+              </TouchableOpacity>
+              <Input placeholder='Machine #' value={this.state.code} />
             </Item>
-            <TouchableOpacity
-              style={styles.accessories}
-              onPress={() =>
-                this.props.navigation.navigate('MachineScanner', { onBarCodeRead: this.onBarCodeRead })}
-            >
-              <Icon active name='md-barcode' fontSize={50} />
-            </TouchableOpacity>
-            {/* <Button transparent primary>
-                <Icon name='md-barcode' />
-              </Button> */}
-            <Item fixedLabel>
+            <Item stackedLabel>
               <Label>Destinataire</Label>
               <Input />
             </Item>
-            <Label style={styles.accessories}>Accessoires</Label>
-            <Textarea rowSpan={5} bordered />
-            <Item fixedLabel last>
-              <Label>Date d`envoie</Label>
-              <Input />
-            </Item>
+            <Textarea rowSpan={5} bordered placeholder='Accessoires' style={styles.accessories} />
+            <DatePicker
+              locale="en"
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={false}
+              animationType="fade"
+              androidMode="default"
+              textStyle={{
+                marginLeft: 7,
+                fontSize: 14,
+                color: '#567fba'
+              }}
+              placeHolderText="Date d'envoie"
+            />
+            <Button
+              block
+              success
+              style={styles.save}
+              onPress={this.onSave}>
+              <Text style={styles.saveText}>Sauvegarder</Text>
+            </Button>
           </Form>
         </Content>
-      </Container>
+      </Container >
     );
   }
 }
 
-export default Ticketdetail;
+
+function mapStateToProps(state) {
+  return {
+    isLoading: state.appData.isLoading,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    createTicket: (ticket) => dispatch(createTicket(ticket)),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Ticketdetail);

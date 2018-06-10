@@ -1,9 +1,9 @@
 import React from 'react';
-import { ListView, Alert, View, ActivityIndicator, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { ListView, Alert, View, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
-import getTickets from '../actions/ticketsActions';
+import { getTickets } from '../actions/ticketsActions';
 
 
 const styles = StyleSheet.create({
@@ -32,7 +32,6 @@ class Home extends React.Component {
 
   constructor(props) {
     super();
-    console.log(props);
   }
 
   componentDidMount() {
