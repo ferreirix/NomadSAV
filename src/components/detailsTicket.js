@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import {
   Container, Textarea, Content, Form,
   Item, Input, Label, Icon, Button, DatePicker
 } from 'native-base';
 import { connect } from 'react-redux';
+import Toaster, { ToastStyles } from 'react-native-toaster'
 import { createTicket } from '../actions/ticketsActions';
+// import ToasterView from './toaster';
+import showToast from '../actions/toastActions';
+
 
 const styles = StyleSheet.create({
   accessories: {
@@ -63,7 +67,7 @@ class Ticketdetail extends Component {
     }));
   };
 
-  
+
   onSave = () => {
     this.props.createTicket(
       {
@@ -74,11 +78,17 @@ class Ticketdetail extends Component {
         accessories: this.state.accessories,
       }
     );
+
+    this.props.showToast({
+      text: 'Ticket created!',
+      styles: ToastStyles.success
+    });
   }
 
   render() {
     return (
       <Container>
+        <Toaster message={this.props.toastMessage} />
         <Content>
           <Form>
             <Item>
@@ -146,12 +156,14 @@ class Ticketdetail extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.appData.isLoading,
+    toastMessage: state.toastMessage.message,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     createTicket: (ticket) => dispatch(createTicket(ticket)),
+    showToast: (toastMessage) => dispatch(showToast(toastMessage)),
   };
 }
 
