@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { Container, Textarea, Content, Form, Item, Input, Label, Icon, Button, DatePicker } from 'native-base';
+import {
+  Container, Textarea, Content, Form,
+  Item, Input, Label, Icon, Button, DatePicker
+} from 'native-base';
 import { connect } from 'react-redux';
 import { createTicket } from '../actions/ticketsActions';
 
@@ -32,6 +35,7 @@ class Ticketdetail extends Component {
       repairer: '',
       dateSent: '',
       accessories: '',
+      isSaving: false,
     }
   }
 
@@ -52,18 +56,22 @@ class Ticketdetail extends Component {
       repairer: data
     }));
   };
+
   onDateChange = data => {
     this.setState((prevState, props) => ({
       dateSent: data
     }));
   };
 
+  
   onSave = () => {
     this.props.createTicket(
       {
         machineId: this.state.code,
         name: this.state.repairer,
-        subtitle: this.state.dateSent
+        subtitle: this.state.dateSent,
+        dateSent: this.state.dateSent,
+        accessories: this.state.accessories,
       }
     );
   }
@@ -105,6 +113,7 @@ class Ticketdetail extends Component {
             />
             <DatePicker
               locale="fr"
+              date={this.state.dateSent}
               onDateChange={this.onDateChange}
               timeZoneOffsetInMinutes={undefined}
               modalTransparent={false}
@@ -122,6 +131,7 @@ class Ticketdetail extends Component {
               success
               style={styles.save}
               onPress={this.onSave}
+              disabled={this.state.isSaving}
             >
               <Text style={styles.saveText}>Sauvegarder</Text>
             </Button>

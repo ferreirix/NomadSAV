@@ -1,5 +1,7 @@
+import getAzureEndopoint from './azureFunctions';
+
 export async function getTickets() {
-  const response = await fetch('https://nomadsav.azurewebsites.net/api/loadtickets');
+  const response = await fetch(`${getAzureEndopoint()}/api/loadtickets`);
   // only proceed once promise is resolved
   const data = await response.json();
   // only proceed once second promise is resolved
@@ -7,7 +9,7 @@ export async function getTickets() {
 }
 
 export async function createTicket(ticket) {
-  const response = await fetch('https://nomadsav.azurewebsites.net/api/createTicket', {
+  const response = await fetch(`${getAzureEndopoint()}/api/createTicket`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -15,7 +17,7 @@ export async function createTicket(ticket) {
     },
     body: JSON.stringify(ticket.data)
   });
-  
+
   // only proceed once promise is resolved
   const data = await response.json();
   // only proceed once second promise is resolved

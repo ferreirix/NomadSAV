@@ -1,5 +1,8 @@
 import React from 'react';
-import { ListView, Alert, View, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  ListView, Alert, View, StyleSheet,
+  TouchableOpacity, RefreshControl
+} from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
@@ -39,27 +42,37 @@ class Home extends React.Component {
     this.props.fetchData();
   }
 
+  onRefresh = () => {
+    this.props.fetchData();
+  }
+
   renderRow = (rowData, sectionID) => (
     <ListItem
       roundAvatar
       key={sectionID}
-      title={rowData.name}
-      subtitle={rowData.age}
-      avatar={{ uri: rowData.avatar_url }}
+      title={rowData.machineId}
+      subtitle={rowData.name}
+      avatar={{ uri: rowData.avatarUrl }}
       onPress={() => Alert.alert("hello!")}
     />
-  )
+  );
 
   render() {
     return (
       <View style={styles.mainViewStyle}>
-        {
+        {/* {
           this.props.isLoading && <ActivityIndicator style={[styles.spinnerStyle]} size="large" color="#0000ff" />
-        }
+        } */}
         <ListView
           enableEmptySections
           renderRow={this.renderRow}
           dataSource={this.props.tickets}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.props.isLoading}
+              onRefresh={this.onRefresh}
+            />
+          }
         />
         <TouchableOpacity
           style={{
