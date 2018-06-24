@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import {
   Container, Textarea, Content, Form,
   Item, Input, Label, Icon, Button, DatePicker
 } from 'native-base';
 import { connect } from 'react-redux';
-import Toaster, { ToastStyles } from 'react-native-toaster'
+import Toaster from 'react-native-toaster';
 import { createTicket } from '../actions/ticketsActions';
-// import ToasterView from './toaster';
-import showToast from '../actions/toastActions';
-
 
 const styles = StyleSheet.create({
   accessories: {
@@ -78,76 +75,73 @@ class Ticketdetail extends Component {
         accessories: this.state.accessories,
       }
     );
-
-    this.props.showToast({
-      text: 'Ticket created!',
-      styles: ToastStyles.success
-    });
   }
 
   render() {
     return (
-      <Container>
+      <Fragment>
         <Toaster message={this.props.toastMessage} />
-        <Content>
-          <Form>
-            <Item>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('MachineScanner',
-                    { onBarCodeRead: this.onBarCodeRead })
-                }
+        <Container>
+          <Content>
+            <Form>
+              <Item>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('MachineScanner',
+                      { onBarCodeRead: this.onBarCodeRead })
+                  }
+                >
+                  <Icon active name='md-barcode' />
+                </TouchableOpacity>
+                <Input
+                  placeholder='Machine #'
+                  value={this.state.code}
+                  onChangeText={(machineId) => this.onBarCodeRead({ code: machineId })}
+                />
+              </Item>
+              <Item stackedLabel>
+                <Label>Destinataire</Label>
+                <Input
+                  value={this.state.repairer}
+                  onChangeText={this.onRepairerChange}
+                />
+              </Item>
+              <Textarea
+                rowSpan={5}
+                bordered
+                placeholder='Accessoires'
+                style={styles.accessories}
+                value={this.state.accessories}
+                onChangeText={this.onAccessoriesChange}
+              />
+              <DatePicker
+                locale="fr"
+                date={this.state.dateSent}
+                onDateChange={this.onDateChange}
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                textStyle={{
+                  marginLeft: 7,
+                  fontSize: 14,
+                  color: '#567fba'
+                }}
+                placeHolderText="Date d'envoie"
+              />
+              <Button
+                block
+                success
+                style={styles.save}
+                onPress={this.onSave}
+                disabled={this.state.isSaving}
               >
-                <Icon active name='md-barcode' />
-              </TouchableOpacity>
-              <Input
-                placeholder='Machine #'
-                value={this.state.code}
-                onChangeText={this.onBarCodeRead}
-              />
-            </Item>
-            <Item stackedLabel>
-              <Label>Destinataire</Label>
-              <Input
-                value={this.state.repairer}
-                onChangeText={this.onRepairerChange}
-              />
-            </Item>
-            <Textarea
-              rowSpan={5}
-              bordered
-              placeholder='Accessoires'
-              style={styles.accessories}
-              value={this.state.accessories}
-              onChangeText={this.onAccessoriesChange}
-            />
-            <DatePicker
-              locale="fr"
-              date={this.state.dateSent}
-              onDateChange={this.onDateChange}
-              timeZoneOffsetInMinutes={undefined}
-              modalTransparent={false}
-              animationType="fade"
-              androidMode="default"
-              textStyle={{
-                marginLeft: 7,
-                fontSize: 14,
-                color: '#567fba'
-              }}
-              placeHolderText="Date d'envoie"
-            />
-            <Button
-              block
-              success
-              style={styles.save}
-              onPress={this.onSave}
-              disabled={this.state.isSaving}
-            >
-              <Text style={styles.saveText}>Sauvegarder</Text>
-            </Button>
-          </Form>
-        </Content>
-      </Container >
+                <Text style={styles.saveText}>Sauvegarder</Text>
+              </Button>
+            </Form>
+          </Content>
+        </Container>
+      </Fragment>
     );
   }
 }
@@ -156,14 +150,13 @@ class Ticketdetail extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.appData.isLoading,
-    toastMessage: state.toastMessage.message,
+    toastMessage: state.toastMessage.toastMessage,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     createTicket: (ticket) => dispatch(createTicket(ticket)),
-    showToast: (toastMessage) => dispatch(showToast(toastMessage)),
   };
 }
 

@@ -1,7 +1,7 @@
-import { SHOW_TOAST } from '../actions/constants'
+import { SHOW_TOAST, HIDE_TOAST } from '../actions/constants'
 
 const initialState = {
-    message: null,
+    toastMessage: null,
 };
 
 export default function toastMessage(state = initialState, action) {
@@ -9,8 +9,13 @@ export default function toastMessage(state = initialState, action) {
         case SHOW_TOAST:
             return {
                 ...state,
-                ...action,
+                toastMessage: action.toastMessage,
             };
+        case HIDE_TOAST:
+            return {
+                ...state,
+                toastMessage: null,
+            }
         default:
             return state
     }

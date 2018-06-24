@@ -6,5 +6,5 @@ export const CREATE_TICKET = 'CREATE_TICKET';
 export const CREATE_TICKET_DONE = 'CREATE_TICKET_DONE';
 export const CREATE_TICKET_ERROR = 'CREATE_TICKET_ERROR';
 
-export const SHOW_TOAST = 'SHOW_TOAST'
-
+export const SHOW_TOAST = 'SHOW_TOAST';
+export const HIDE_TOAST = 'HIDE_TOAST';
