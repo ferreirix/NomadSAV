@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
+import Toaster from 'react-native-toaster';
 import { Ionicons } from '@expo/vector-icons'
 import { getTickets } from '../actions/ticketsActions';
 
@@ -60,6 +61,8 @@ class Home extends React.Component {
   render() {
     return (
       <View style={styles.mainViewStyle}>
+        <Toaster message={this.props.toastMessage} />
+
         {/* {
           this.props.isLoading && <ActivityIndicator style={[styles.spinnerStyle]} size="large" color="#0000ff" />
         } */}
@@ -102,6 +105,7 @@ function mapStateToProps(state) {
   return {
     tickets: ds.cloneWithRows(state.appData.tickets),
     isLoading: state.appData.isLoading,
+    toastMessage: state.toastMessage.toastMessage,
   };
 }
 

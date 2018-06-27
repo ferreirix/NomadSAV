@@ -5,7 +5,6 @@ import {
   Item, Input, Label, Icon, Button, DatePicker
 } from 'native-base';
 import { connect } from 'react-redux';
-import Toaster from 'react-native-toaster';
 import { createTicket } from '../actions/ticketsActions';
 
 const styles = StyleSheet.create({
@@ -75,12 +74,12 @@ class Ticketdetail extends Component {
         accessories: this.state.accessories,
       }
     );
+    this.props.navigation.goBack();
   }
 
   render() {
     return (
       <Fragment>
-        <Toaster message={this.props.toastMessage} />
         <Container>
           <Content>
             <Form>
@@ -150,7 +149,6 @@ class Ticketdetail extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.appData.isLoading,
-    toastMessage: state.toastMessage.toastMessage,
   };
 }
 
